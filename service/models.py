@@ -247,3 +247,16 @@ class Product(db.Model):
         """
         logger.info("Processing category query for %s ...", category.name)
         return cls.query.filter(cls.category == category)
+
+
+def test_deserialize_missing_field(self):
+    product = Product()
+    with self.assertRaises(DataValidationError):
+        product.deserialize({"name": "Test"})  # missing description, price, etc.
+
+
+def test_update_without_id(self):
+    product = Product(name="Test", description="Desc", price=Decimal("10.00"), available=True, category=Category.CLOTHS)
+    with self.assertRaises(DataValidationError):
+        product.update()
+        
